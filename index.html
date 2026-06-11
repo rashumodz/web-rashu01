@@ -1,808 +1,554 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rashu-ofc | RASHU-MD Bot</title>
+    <title>Nipun Ofc | Tutorial</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+    
+    /* Black & White Wide Buttons Custom Styles */
+.btn-bw-wide {
+    background-color: #ffffff; /* සාමාන්‍ය වෙලාවට පසුබිම සුදු පාට */
+    color: #000000; /* අකුරු කළු පාට */
+    width: 100%; /* බටන් එක දිගින් වැඩි කිරීමට */
+    max-width: 500px; /* උපරිම දිග සීමාව (Commands Container එකේ දිගටම සමානයි) */
+    justify-content: center; /* Icon සහ අකුරු මැදට ගැනීමට */
+    border: 2px solid #ffffff;
+}
+
+.btn-bw-wide:hover {
+    background-color: #050505; /* මවුස් එක උඩට ගිය විට පසුබිම කළු පාට */
+    color: #ffffff; /* අකුරු සුදු පාට */
+    border-color: #ffffff; /* බෝඩරය සුදු පාට */
+}
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #00f3ff;
-            --secondary: #9d00ff;
-            --accent: #ff00cc;
-            --dark: #0a0a1a;
-            --light: #f0f8ff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --cyber-blue: #00ccff;
-            --cyber-pink: #ff00ff;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
         }
 
         body {
-            font-family: 'Exo 2', sans-serif;
-            background-color: var(--dark);
-            color: var(--light);
+            background-color: #050505;
+            color: #fff;
             overflow-x: hidden;
-            min-height: 100vh;
+            position: relative;
         }
 
-        /* Loading Screen */
-        #loading-screen {
+        /* --- Snowfall Effect --- */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: #fff;
+            user-select: none;
+            z-index: 1000;
+            pointer-events: none;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(105vh); }
+        }
+
+        /* --- Music Control Button --- */
+        #music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #444;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+
+        #music-control:hover { background: rgba(255, 255, 255, 0.2); }
+
+        /* --- Splash Screen --- */
+        #splash {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background-color: var(--dark);
+            height: 100vh;
+            background: #000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            transition: opacity 0.8s ease;
         }
 
-        #loading-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .cyber-loader {
-            width: 120px;
-            height: 120px;
+        /* Larger Spinner */
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid #222;
+            border-top: 4px solid #ffffff;
             border-radius: 50%;
-            position: relative;
-            margin-bottom: 30px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
         }
 
-        .cyber-loader::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 5px solid transparent;
-            border-top-color: var(--cyber-blue);
-            border-bottom-color: var(--cyber-pink);
-            animation: spin 1.5s linear infinite;
-        }
-
-        .loading-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+        /* Typing Animation */
+        #typing-text {
+            font-size: 20px;
+            font-weight: bold;
             letter-spacing: 3px;
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
-            margin-top: 20px;
-        }
-
-        .loading-dots::after {
-            content: '';
-            animation: dots 1.5s steps(4, end) infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes dots {
-            0%, 20% { content: ''; }
-            40% { content: '.'; }
-            60% { content: '..'; }
-            80%, 100% { content: '...'; }
-        }
-
-        /* Animated Background */
-        .cyber-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+            color: #fff;
+            height: 25px; /* keep height to prevent layout shift */
+            border-right: 2px solid #fff; /* Cursor effect */
+            white-space: nowrap;
             overflow: hidden;
+            animation: blink 0.7s infinite alternate;
         }
 
-        .grid-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes blink { from { border-color: transparent; } to { border-color: #fff; } }
+
+        /* --- Layout --- */
+        #main-content {
+            display: none;
+            opacity: 0;
             width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
+            padding: 20px 5%;
+            transition: opacity 1s ease-in;
         }
 
-        .floating-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+        nav {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
         }
 
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.4;
-        }
+        .logo { font-weight: 800; letter-spacing: 2px; font-size: 20px; color: #fff; text-decoration: none; }
 
-        .shape-1 {
-            width: 300px;
-            height: 300px;
-            background: var(--cyber-blue);
-            top: 10%;
-            left: 5%;
-            animation: float 25s infinite linear;
-        }
-
-        .shape-2 {
-            width: 250px;
-            height: 250px;
-            background: var(--cyber-pink);
-            bottom: 10%;
-            right: 10%;
-            animation: float 30s infinite linear reverse;
-        }
-
-        .shape-3 {
-            width: 200px;
-            height: 200px;
-            background: var(--secondary);
-            top: 50%;
-            left: 80%;
-            animation: float 20s infinite linear;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(50px, 50px) rotate(90deg); }
-            50% { transform: translate(0, 100px) rotate(180deg); }
-            75% { transform: translate(-50px, 50px) rotate(270deg); }
-        }
-
-        /* Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        header {
-            text-align: center;
-            padding: 30px 0;
-        }
-
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 900;
-            letter-spacing: 5px;
-            background: linear-gradient(to right, var(--cyber-blue), var(--cyber-pink));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
-            margin-bottom: 10px;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 15px rgba(0, 243, 255, 0.5); }
-            to { text-shadow: 0 0 25px rgba(255, 0, 255, 0.7), 0 0 15px rgba(0, 243, 255, 0.5); }
-        }
-
-        .tagline {
-            font-size: 1.2rem;
-            color: var(--primary);
+        .dashboard-link {
+            text-decoration: none;
+            color: #fff;
+            font-size: 13px;
             letter-spacing: 2px;
-            margin-bottom: 30px;
+            border: 1px solid #333;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: 0.3s;
         }
 
-        /* Photo Card */
-        .photo-card-container {
+        .dashboard-link:hover { background: #fff; color: #000; }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: center;
-            margin: 40px 0;
+            align-items: center;
         }
 
-        .photo-card {
-            width: 280px;
-            height: 350px;
-            background: var(--glass);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 243, 255, 0.2);
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            animation: cardFloat 6s ease-in-out infinite;
-        }
-
-        @keyframes cardFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .photo-card:hover {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 15px 40px rgba(0, 243, 255, 0.4);
-        }
-
-        .photo-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, var(--cyber-blue), var(--cyber-pink));
-        }
-
-        .photo-frame {
-            width: 180px;
-            height: 180px;
+        .profile-img {
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            margin: 0 auto 20px;
-            border: 3px solid transparent;
-            background: linear-gradient(var(--dark), var(--dark)) padding-box,
-                        linear-gradient(to right, var(--cyber-blue), var(--cyber-pink)) border-box;
-            overflow: hidden;
-            position: relative;
+            object-fit: cover;
+            z-index: 2;
         }
 
-        .photo-frame img {
+        .ring {
+            position: absolute;
+            width: 135px;
+            height: 135px;
+            border: 2px solid transparent;
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        h1 span { color: #555; }
+
+        .bot-desc {
+            max-width: 600px;
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* --- Action Buttons Container --- */
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-animated {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: #000;
+            text-decoration: none;
+            padding: 15px 35px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 12px;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 20px rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-animated i {
+            font-size: 18px;
+        }
+
+        .btn-yt {
+            background-color: #ff0000;
+            color: #fff;
+        }
+
+        .btn-fb {
+            background-color: #1877f2;
+            color: #fff;
+        }
+
+        .btn-animated:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(255,255,255,0.15);
+            filter: brightness(1.1);
+        }
+
+        /* --- Social Media Downloader Container --- */
+        .commands-container {
             width: 100%;
-            height: 100%;
+            max-width: 500px;
+            background: #111;
+            padding: 25px;
+            border-radius: 25px;
+            border: 1px solid #222;
+            margin-bottom: 50px;
+        }
+
+        .commands-container h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: left;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
+            color: #eee;
+        }
+
+        /* Clickable Item Style */
+        .cmd-item-link {
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .cmd-item-link:last-child {
+            margin-bottom: 0;
+        }
+
+        .cmd-item {
+            display: flex;
+            align-items: center;
+            background: #181818;
+            padding: 15px;
+            border-radius: 15px;
+            transition: 0.3s;
+            text-align: left;
+            border: 1px solid transparent;
+        }
+
+        .cmd-item:hover { 
+            background: #222; 
+            transform: translateX(10px);
+            border-color: #333;
+        }
+
+        /* Custom Rashu Image Container */
+        .cmd-icon-img { 
+            width: 40px; 
+            height: 40px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cmd-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             object-fit: cover;
         }
 
-        .bot-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-        }
+        .cmd-info h4 { font-size: 14px; margin-bottom: 2px; color: #fff; }
 
-        .bot-title {
-            color: var(--cyber-pink);
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-        }
+        .cmd-info p { font-size: 12px; color: #666; }
 
-        /* About Section */
-        .section {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-            border: 1px solid rgba(0, 243, 255, 0.1);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        }
+        .fade-up { animation: fadeInUp 1s ease forwards; }
 
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title i {
-            color: var(--cyber-pink);
-        }
-
-        .about-text {
-            line-height: 1.6;
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            color: #e0e0ff;
-        }
-
-        .highlight {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        /* Buttons */
-        .buttons-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin: 40px 0;
-        }
-
-        .btn {
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-family: 'Exo 2', sans-serif;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: center;
-            min-width: 200px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(to right, var(--cyber-blue), var(--secondary));
-            color: white;
-            box-shadow: 0 5px 15px rgba(0, 204, 255, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 204, 255, 0.6);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0, 243, 255, 0.1);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 243, 255, 0.3);
-        }
-
-        .btn-whatsapp {
-            background: linear-gradient(to right, #25D366, #128C7E);
-            color: white;
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
-        }
-
-        .btn-whatsapp:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.6);
-        }
-
-        /* Owner Portfolio */
-        .owner-portfolio {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .portfolio-item {
-            background: rgba(10, 10, 26, 0.7);
-            border-radius: 15px;
-            padding: 20px;
-            border-left: 4px solid var(--primary);
-            transition: transform 0.3s ease;
-        }
-
-        .portfolio-item:hover {
-            transform: translateY(-5px);
-            background: rgba(0, 243, 255, 0.05);
-        }
-
-        .portfolio-item h3 {
-            color: var(--cyber-pink);
-            margin-bottom: 10px;
-            font-size: 1.3rem;
-        }
-
-        .portfolio-item p {
-            color: #c0c0ff;
-            line-height: 1.5;
-        }
-
-        .portfolio-item .highlight {
-            color: var(--primary);
-        }
-
-        /* Popup */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9998;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        .popup-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .popup {
-            background: var(--dark);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            padding: 30px;
-            border: 1px solid rgba(0, 243, 255, 0.3);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
-            position: relative;
-            transform: scale(0.8);
-            transition: transform 0.5s ease;
-        }
-
-        .popup-overlay.active .popup {
-            transform: scale(1);
-        }
-
-        .popup-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .popup-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .popup-subtitle {
-            color: #c0c0ff;
-            margin-bottom: 20px;
-        }
-
-        .popup-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .popup-btn {
-            padding: 15px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            color: white;
-        }
-
-        .popup-btn.whatsapp {
-            background: #25D366;
-        }
-
-        .popup-btn.youtube {
-            background: #FF0000;
-        }
-
-        .popup-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .close-popup {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: transparent;
-            border: none;
-            color: var(--primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .close-popup:hover {
-            background: rgba(255, 0, 255, 0.1);
-            transform: rotate(90deg);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 50px;
-            border-top: 1px solid rgba(0, 243, 255, 0.1);
-            color: #a0a0ff;
-            font-size: 0.9rem;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .social-link {
-            color: var(--primary);
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            color: var(--cyber-pink);
-            transform: translateY(-5px);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 2.5rem;
-            }
-            
-            .photo-card {
-                width: 250px;
-                height: 320px;
-            }
-            
-            .buttons-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .owner-portfolio {
-                grid-template-columns: 1fr;
-            }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="cyber-loader"></div>
-        <div class="loading-text">INITIALIZING SYSTEM<span class="loading-dots"></span></div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://files.catbox.moe/srf3p5.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-control" onclick="toggleMusic()">
+        <i id="music-icon" class="fa-solid fa-volume-high"></i>
+        <span id="music-text">Music ON</span>
+    </button>
+
+    <div id="splash">
+        <div class="spinner"></div>
+        <div id="typing-text"></div>
     </div>
 
-    <!-- Popup -->
-    <div class="popup-overlay" id="popup">
-        <div class="popup">
-            <button class="close-popup" id="close-popup">&times;</button>
-            <div class="popup-header">
-                <h2 class="popup-title">CONNECT WITH RASHU</h2>
-                <p class="popup-subtitle">Join our community for updates and support</p>
+    <div id="main-content">
+        <nav>
+            <a href="https://nipun.site" class="logo">NIPUN|🅾🅵🅲</a>
+            <a href="https://youtu.be/g2y7DC9EZqk?si=vlJOFtgZ-uBcejPX" class="dashboard-link">Set Up Bot</a>
+        </nav>
+
+        <main class="hero-section">
+            <div class="profile-container fade-up">
+                <div class="ring"></div>
+                <img src="https://i.ibb.co/k6Jtg95x/IMG-20260513-WA0010.jpg" alt="Queen Rashu" class="profile-img">
             </div>
-            <div class="popup-actions">
-                <a href="https://whatsapp.com/channel/0029VaExampleChannel" target="_blank" class="popup-btn whatsapp">
-                    <i class="fab fa-whatsapp"></i> Join WhatsApp Channel
-                </a>
-                <a href="https://youtube.com/c/RashuOFC" target="_blank" class="popup-btn youtube">
-                    <i class="fab fa-youtube"></i> Subscribe YouTube Channel
-                </a>
-            </div>
-        </div>
-    </div>
 
-    <!-- Animated Background -->
-    <div class="cyber-background">
-        <div class="grid-lines"></div>
-        <div class="floating-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
-        </div>
-    </div>
+            <h1 class="fade-up">Nipun <span>Ofc.</span></h1>
 
-    <!-- Main Content -->
-    <div class="container">
-        <header>
-            <h1 class="logo">RASHU-OFC</h1>
-            <p class="tagline">CYBERPUNK BOT DEVELOPMENT</p>
-        </header>
-
-        <!-- Photo Card -->
-        <div class="photo-card-container">
-            <div class="photo-card">
-                <div class="photo-frame">
-                    <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="RASHU-MD Bot">
-                </div>
-                <h2 class="bot-name">RASHU-MD</h2>
-                <p class="bot-title">Multi-Device WhatsApp Bot</p>
-                <p>Version 4.0.1</p>
-                <p>Status: <span style="color:#00ff00;">●</span> Online</p>
-            </div>
-        </div>
-
-        <!-- About Section -->
-        <section class="section">
-            <h2 class="section-title"><i class="fas fa-robot"></i> ABOUT RASHU-MD</h2>
-            <p class="about-text">
-                <span class="highlight">RASHU-MD</span> is an advanced, feature-rich WhatsApp bot built on the Baileys framework. 
-                It supports multi-device functionality and comes packed with hundreds of commands for entertainment, 
-                productivity, utilities, and moderation. The bot features an intuitive plugin system, making it 
-                highly customizable for any WhatsApp group or personal use.
+            <p class="bot-desc fade-up">
+                𝗤𝗨𝗘𝗘𝗡 𝗥𝗔𝗦𝗛𝗨 𝗠𝗗 is a high-performance WhatsApp multi-device bot, developed by 𝗡𝗶𝗽𝘂𝗻 𝗛𝗮𝗿𝘀𝗵𝗮𝗻𝗮. Featuring advanced automation, it provides seamless media downloading, group management, and real-time responses.
             </p>
-            <p class="about-text">
-                With a focus on stability and performance, <span class="highlight">RASHU-MD</span> delivers lightning-fast response times 
-                and 99.9% uptime. The bot is regularly updated with new features, security patches, and improvements 
-                based on user feedback.
-            </p>
-        </section>
 
-        <!-- Pair Bot Button -->
-        <div class="buttons-container">
-            <button class="btn btn-primary" id="pair-bot">
-                <i class="fas fa-link"></i> PAIR BOT
-            </button>
-        </div>
-
-        <!-- Owner Portfolio -->
-        <section class="section">
-            <h2 class="section-title"><i class="fas fa-user-astronaut"></i> DEVELOPER PORTFOLIO</h2>
-            <div class="owner-portfolio">
-                <div class="portfolio-item">
-                    <h3>👨‍💻 Developer</h3>
-                    <p><span class="highlight">Name:</span> Rashu</p>
-                    <p><span class="highlight">Role:</span> Full Stack Developer</p>
-                    <p><span class="highlight">Age:</span> 22</p>
-                </div>
-                <div class="portfolio-item">
-                    <h3>🌍 Location</h3>
-                    <p><span class="highlight">Village:</span> Colombo, Sri Lanka</p>
-                    <p><span class="highlight">Country:</span> Sri Lanka</p>
-                </div>
-                <div class="portfolio-item">
-                    <h3>🛠️ Skills</h3>
-                    <p><span class="highlight">Web Development:</span> HTML, CSS, JavaScript, React</p>
-                    <p><span class="highlight">Bot Development:</span> WhatsApp Bots, Discord Bots</p>
-                    <p><span class="highlight">Backend:</span> Node.js, Python, MongoDB</p>
-                </div>
-                <div class="portfolio-item">
-                    <h3>📞 Contact</h3>
-                    <p><span class="highlight">Phone:</span> +94 76 408 5107</p>
-                    <p><span class="highlight">Email:</span> rashu.ofc@example.com</p>
-                    <p><span class="highlight">Availability:</span> Freelance Projects</p>
-                </div>
+            <div class="action-buttons fade-up">
+                <a href="https://youtube.com/@rashumodz_0715?si=uzvCSo1T72JL12Y0" class="btn-animated btn-yt" target="_blank">
+                    <i class="fa-brands fa-youtube"></i> Subscribe
+                </a>
+                <a href="https://www.facebook.com/share/1ANChXaUZx/" class="btn-animated btn-fb" target="_blank">
+                    <i class="fa-brands fa-facebook-f"></i> Follow Page
+                </a>
+                
+                <!-- අලුතින් එකතු කල Black & White දිග බටන් 2 -->
+<a href="ඔබේ_ලින්ක්_එක_මෙතනට" class="btn-animated btn-bw-wide" target="_blank">
+    <i class="fa-solid fa-link"></i> Button 01 Name
+</a>
+<a href="ඔබේ_ලින්ක්_එක_මෙතනට" class="btn-animated btn-bw-wide" target="_blank">
+    <i class="fa-solid fa-link"></i> Button 02 Name
+</a>
             </div>
-        </section>
 
-        <!-- Action Buttons -->
-        <div class="buttons-container">
-            <a href="https://wa.me/94764085107?text=I%20want%20to%20hire%20you" target="_blank" class="btn btn-whatsapp">
-                <i class="fab fa-whatsapp"></i> CHAT WITH RASHU
-            </a>
-            <button class="btn btn-secondary" id="whatsapp-channel">
-                <i class="fas fa-broadcast-tower"></i> WHATSAPP CHANNEL
-            </button>
-            <button class="btn btn-secondary" id="youtube-channel">
-                <i class="fab fa-youtube"></i> YOUTUBE CHANNEL
-            </button>
-        </div>
+            <div class="commands-container fade-up">
+                <h3><i class="fa-solid fa-cloud-arrow-down"></i> All Tutorial Video</h3>
+                
+                <a href="https://m.facebook.com/story.php?story_fbid=pfbid09SNwmrVzZVgDyy7e5ZqnieWU1ny8jgcfZR9DEZjewbyWE5W28g4YqUDLaQycrCQUl&id=61590518333785" class="cmd-item-link" target="_blank">
+                    <div class="cmd-item">
+                        <div class="cmd-icon-img">
+                            <img src="rashu.png" alt="Rashu Logo" class="cmd-img" onerror="this.src='https://i.ibb.co/23JzB2S6/1779694162807.png';">
+                        </div>
+                        <div class="cmd-info">
+                            <h4>Mobile Hack Tiks</h4>
+                            <p>Back Cam / Face Cam / Location And All Apps Gallery Hack.</p>
+                        </div>
+                    </div>
+                </a>
 
-        <footer>
-            <p>© 2023 RASHU-OFC. All rights reserved. | CYBERPUNK BOT DEVELOPMENT</p>
-            <div class="social-links">
-                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="https://nipun.site" class="cmd-item-link" target="_blank">
+                    <div class="cmd-item">
+                        <div class="cmd-icon-img">
+                            <img src="rashu.png" alt="Rashu Logo" class="cmd-img" onerror="this.src='https://i.ibb.co/k6Jtg95x/IMG-20260513-WA0010.jpg';">
+                        </div>
+                        <div class="cmd-info">
+                            <h4>Instagram Reel</h4>
+                            <p>Save Instagram reels and posts instantly.</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://nipun.site" class="cmd-item-link" target="_blank">
+                    <div class="cmd-item">
+                        <div class="cmd-icon-img">
+                            <img src="rashu.png" alt="Rashu Logo" class="cmd-img" onerror="this.src='https://i.ibb.co/k6Jtg95x/IMG-20260513-WA0010.jpg';">
+                        </div>
+                        <div class="cmd-info">
+                            <h4>TikTok No Watermark</h4>
+                            <p>Get TikTok videos without the watermark.</p>
+                        </div>
+                    </div>
+                </a>
+                 <a href="https://nipun.site" class="cmd-item-link" target="_blank">
+                    <div class="cmd-item">
+                        <div class="cmd-icon-img">
+                            <img src="rashu.png" alt="Rashu Logo" class="cmd-img" onerror="this.src='https://i.ibb.co/k6Jtg95x/IMG-20260513-WA0010.jpg';">
+                        </div>
+                        <div class="cmd-info">
+                            <h4>Comming Soon</h4>
+                            <p>Coming Soon</p>
+                        </div>
+                    </div>
+                </a>
+                 <a href="https://nipun.site" class="cmd-item-link" target="_blank">
+                    <div class="cmd-item">
+                        <div class="cmd-icon-img">
+                            <img src="rashu.png" alt="Rashu Logo" class="cmd-img" onerror="this.src='https://i.ibb.co/k6Jtg95x/IMG-20260513-WA0010.jpg';">
+                        </div>
+                        <div class="cmd-info">
+                            <h4>Comming Soon</h4>
+                            <p>Coming Soon</p>
+                        </div>
+                    </div>
+                </a>
+                 <a href="https://nipun.site" class="cmd-item-link" target="_blank">
+                    <div class="cmd-item">
+                        <div class="cmd-icon-img">
+                            <img src="rashu.png" alt="Rashu Logo" class="cmd-img" onerror="this.src='https://i.ibb.co/k6Jtg95x/IMG-20260513-WA0010.jpg';">
+                        </div>
+                        <div class="cmd-info">
+                            <h4>Comming Soon</h4>
+                            <p>Coming Soon</p>
+                        </div>
+                    </div>
+                </a>
+                 <a href="https://nipun.site" class="cmd-item-link" target="_blank">
+                    <div class="cmd-item">
+                        <div class="cmd-icon-img">
+                            <img src="rashu.png" alt="Rashu Logo" class="cmd-img" onerror="this.src='https://i.ibb.co/k6Jtg95x/IMG-20260513-WA0010.jpg';">
+                        </div>
+                        <div class="cmd-info">
+                            <h4>Comming Soon</h4>
+                            <p>Coming Soon</p>
+                        </div>
+                    </div>
+                </a>
+                 <a href="https://nipun.site" class="cmd-item-link" target="_blank">
+                    <div class="cmd-item">
+                        <div class="cmd-icon-img">
+                            <img src="rashu.png" alt="Rashu Logo" class="cmd-img" onerror="this.src='https://i.ibb.co/k6Jtg95x/IMG-20260513-WA0010.jpg';">
+                        </div>
+                        <div class="cmd-info">
+                            <h4>Comming Soon</h4>
+                            <p>Coming Soon</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://nipun.site" class="cmd-item-link" target="_blank">
+                    <div class="cmd-item">
+                        <div class="cmd-icon-img">
+                            <img src="rashu.png" alt="Rashu Logo" class="cmd-img" onerror="this.src='https://i.ibb.co/k6Jtg95x/IMG-20260513-WA0010.jpg';">
+                        </div>
+                        <div class="cmd-info">
+                            <h4>YouTube MP3/MP4</h4>
+                            <p>Convert and download YouTube media easily.</p>
+                        </div>
+                    </div>
+                </a>
             </div>
-        </footer>
+        </main>
     </div>
 
     <script>
-        // Loading screen
-        window.addEventListener('load', function() {
-            const loadingScreen = document.getElementById('loading-screen');
-            
-            // Simulate loading time
-            setTimeout(() => {
-                loadingScreen.classList.add('hidden');
-                
-                // Show popup after a short delay
-                setTimeout(() => {
-                    document.getElementById('popup').classList.add('active');
-                }, 1000);
-            }, 2000);
-        });
+        const audio = document.getElementById('bgMusic');
+        const musicIcon = document.getElementById('music-icon');
+        const musicText = document.getElementById('music-text');
 
-        // Popup functionality
-        document.getElementById('close-popup').addEventListener('click', function() {
-            document.getElementById('popup').classList.remove('active');
-        });
-
-        // Open popup when channel buttons are clicked
-        document.getElementById('whatsapp-channel').addEventListener('click', function() {
-            document.getElementById('popup').classList.add('active');
-        });
-
-        document.getElementById('youtube-channel').addEventListener('click', function() {
-            document.getElementById('popup').classList.add('active');
-        });
-
-        // Close popup when clicking outside
-        document.getElementById('popup').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.remove('active');
+        // --- Typing Effect Function ---
+        function typeWriter(text, i, fnCallback) {
+            if (i < text.length) {
+                document.getElementById("typing-text").innerHTML = text.substring(0, i+1);
+                setTimeout(function() {
+                    typeWriter(text, i + 1, fnCallback)
+                }, 100);
+            } else if (typeof fnCallback == 'function') {
+                setTimeout(fnCallback, 700);
             }
-        });
+        }
 
-        // Pair bot button functionality
-        document.getElementById('pair-bot').addEventListener('click', function() {
-            // In a real implementation, this would initiate bot pairing
-            const button = this;
-            const originalText = button.innerHTML;
-            
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PAIRING...';
-            button.disabled = true;
-            
-            // Simulate pairing process
+        // --- Snowfall Function ---
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = '&#10052;'; // Snow icon
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2-5 sec
+            snowflake.style.opacity = Math.random();
+            snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+
+            document.body.appendChild(snowflake);
+
             setTimeout(() => {
-                button.innerHTML = '<i class="fas fa-check"></i> PAIRED SUCCESSFULLY';
-                button.style.background = 'linear-gradient(to right, #00ff00, #00cc00)';
+                snowflake.remove();
+            }, 5000);
+        }
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicIcon.className = "fa-solid fa-volume-high";
+                musicText.innerText = "Music ON";
+            } else {
+                audio.pause();
+                musicIcon.className = "fa-solid fa-volume-xmark";
+                musicText.innerText = "Music OFF";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Start Snowfall
+            setInterval(createSnowflake, 100);
+
+            // Start Typing and Then Hide Splash
+            typeWriter("NIPUN OFC APP", 0, () => {
+                const splash = document.getElementById('splash');
+                const main = document.getElementById('main-content');
                 
-                // Reset after 3 seconds
+                splash.style.opacity = '0';
                 setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.disabled = false;
-                    button.style.background = '';
-                }, 3000);
-            }, 2000);
-        });
+                    splash.style.display = 'none';
+                    main.style.display = 'block';
+                    setTimeout(() => main.style.opacity = '1', 50);
+                }, 800);
+            });
 
-        // Add some interactive effects
-        document.querySelectorAll('.portfolio-item, .photo-card').forEach(item => {
-            item.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px)';
-            });
-            
-            item.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-
-        // Add floating animation to buttons
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
-            });
-            
-            btn.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
+            // Music autoplay fix
+            window.addEventListener('click', () => {
+                if(audio.paused && musicText.innerText === "Music ON") {
+                    audio.play();
+                }
+            }, { once: true });
         });
     </script>
 </body>
